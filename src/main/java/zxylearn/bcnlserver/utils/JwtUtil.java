@@ -24,50 +24,24 @@ public class JwtUtil {
     @Value("${jwt.refresh-token-expiration}")
     private long refreshTokenExpiration;
 
-    // 生成访问令牌
-    public String generateAccessToken(String userId) {
-        Map<String, Object> claims = Map.of("type", "access");
+    // 生成令牌
+    public String generateToken(String userId, String role) {
+        Map<String, Object> claims = Map.of("role", role);
         return createToken(claims, userId, accessTokenExpiration);
     }
 
-    // 生成刷新令牌
-    public String generateRefreshToken(String userId) {
-        Map<String, Object> claims = Map.of("type", "refresh");
-        return createToken(claims, userId, refreshTokenExpiration);
-    }
-
-    // 验证访问令牌
-    public String verifyAccessToken(String token) {
+    // 验证令牌
+    public Map<String, String> verifyToken(String token) {
         try {
             var claims = io.jsonwebtoken.Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            if ("access".equals(claims.get("type"))) {
-                return claims.getSubject();
-            }
+            return Map.of("userId", claims.getSubject(), "role", claims.get("role", String.class));
         } catch (Exception e) {
             return null;
         }
-        return null;
-    }
-
-    // 验证刷新令牌
-    public String verifyRefreshToken(String token) {
-        try {
-            var claims = io.jsonwebtoken.Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-            if ("refresh".equals(claims.get("type"))) {
-                return claims.getSubject();
-            }
-        } catch (Exception e) {
-            return null;
-        }
-        return null;
     }
 
     // 获取令牌ID
@@ -98,7 +72,7 @@ public class JwtUtil {
         }
     }
 
-    // 创建JWT令牌
+    // 创建令牌
     private String createToken(Map<String, Object> claims, String subject, long expiration) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expiration);
