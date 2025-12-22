@@ -20,12 +20,15 @@ public class TeamJoinApply {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @TableField(value = "user_id")
-    private Long userId;
+    @TableField(value = "applicant_id")
+    private Long applicantId;
 
     @TableField(value = "team_id")
     private Long teamId;
 
     @TableField(value = "apply_time")
     private LocalDateTime applyTime;
+
+    @TableField(value = "status")
+    private Integer status; // 0 待审核 1 已通过 2 已拒绝
 }

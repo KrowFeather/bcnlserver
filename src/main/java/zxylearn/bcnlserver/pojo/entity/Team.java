@@ -34,5 +34,5 @@ public class Team {
     private Long ownerId;
 
     @TableField(value = "status")
-    private Integer status;
+    private Integer status; // 0 待审核 1 已通过 2 已拒绝 3 已删除
 }

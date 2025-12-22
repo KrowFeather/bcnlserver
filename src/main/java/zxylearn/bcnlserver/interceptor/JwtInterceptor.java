@@ -24,7 +24,13 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        String token = request.getHeader("Authorization");
+        String authorizationHeader = request.getHeader("Authorization");
+        if(authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            response.setStatus(401);
+            return false;
+        }
+        
+        String token = authorizationHeader.replace("Bearer ", "");
         if(token == null) {
             response.setStatus(401);
             return false;
@@ -38,9 +44,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
 
         // 验证令牌
-        if (token != null && !token.isBlank()) {
+        if (token != null) {
             Map<String, String> userInfo = jwtUtil.verifyToken(token);
-
             if (userInfo != null) {
                 UserContext.setUser(userInfo);
                 return true;

@@ -22,7 +22,7 @@ public class Knife4jConfig {
                                 new SecurityScheme()
                                         .name("Authorization")
                                         .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
+                                        .scheme("Bearer")
                                         .bearerFormat("JWT")));
     }
 }

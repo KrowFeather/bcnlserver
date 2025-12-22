@@ -18,11 +18,8 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.access-token-expiration}")
-    private long accessTokenExpiration;
-
-    @Value("${jwt.refresh-token-expiration}")
-    private long refreshTokenExpiration;
+    @Value("${jwt.token-expiration}")
+    private long expiration;
 
     public static String ADMIN = "ADMIN";
     public static String USER = "USER";
@@ -30,7 +27,7 @@ public class JwtUtil {
     // 生成令牌
     public String generateToken(String userId, String role) {
         Map<String, Object> claims = Map.of("role", role);
-        return createToken(claims, userId, accessTokenExpiration);
+        return createToken(claims, userId, expiration);
     }
 
     // 验证令牌
@@ -43,6 +40,7 @@ public class JwtUtil {
                     .getBody();
             return Map.of("userId", claims.getSubject(), "role", claims.get("role", String.class));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return null;
         }
     }

@@ -29,7 +29,7 @@ import zxylearn.bcnlserver.service.UserService;
 import zxylearn.bcnlserver.utils.EmailUtil;
 import zxylearn.bcnlserver.utils.JwtUtil;
 
-@Tag(name = "权限验证模块")
+@Tag(name = "权限模块")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

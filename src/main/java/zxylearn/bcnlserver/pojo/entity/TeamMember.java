@@ -1,5 +1,7 @@
 package zxylearn.bcnlserver.pojo.entity;
 
+import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -21,9 +23,12 @@ public class TeamMember {
     @TableField(value = "team_id")
     private Long teamId;
 
-    @TableField(value = "user_id")
-    private Long userId;
+    @TableField(value = "member_id")
+    private Long memberId;
 
     @TableField(value = "position")
     private String position;
+
+    @TableField(value = "join_time")
+    private LocalDateTime joinTime;
 }

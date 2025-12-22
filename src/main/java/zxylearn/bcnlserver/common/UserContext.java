@@ -10,11 +10,11 @@ public class UserContext {
     }
 
     public static String getUserId() {
-        return USER_INFO.get() != null ? USER_INFO.get().get("userId") : null;
+        return USER_INFO.get() != null ? USER_INFO.get().get("userId") : "-1";
     }
 
     public static String getUserRole() {
-        return USER_INFO.get() != null ? USER_INFO.get().get("role") : null;
+        return USER_INFO.get() != null ? USER_INFO.get().get("role") : "NULL";
     }
 
     public static void remove() {
