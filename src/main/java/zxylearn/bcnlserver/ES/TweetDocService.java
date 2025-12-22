@@ -1,6 +1,5 @@
 package zxylearn.bcnlserver.ES;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.stereotype.Service;
 
-import org.springframework.data.elasticsearch.core.query.Query;
 import co.elastic.clients.elasticsearch._types.query_dsl.TextQueryType;
 import zxylearn.bcnlserver.pojo.document.TweetDoc;
 
@@ -24,8 +22,9 @@ public class TweetDocService {
         return esOps.save(tweetDoc) != null;
     }
 
-    public TweetDoc getTweetDoc(Long TweetId) {
-        return esOps.get(TweetId.toString(), TweetDoc.class);
+    // 获取指定推文
+    public TweetDoc getTweetById(Long tweetId) {
+        return esOps.get(tweetId.toString(), TweetDoc.class);
     }
 
     // 删除推文

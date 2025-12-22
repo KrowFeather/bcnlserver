@@ -87,7 +87,7 @@ public class TweetController {
         String role = UserContext.getUserRole();
 
         // 判断推文删除合法性
-        TweetDoc tweetDoc = tweetDocService.getTweetDoc(tweetId);
+        TweetDoc tweetDoc = tweetDocService.getTweetById(tweetId);
         if(tweetDoc == null) {
             return ResponseEntity.status(404).body(Map.of("error", "推文不存在"));
         }
