@@ -76,7 +76,7 @@ public class AuthController {
     public ResponseEntity<?> getEmailCaptcha(
             @RequestParam("email") String email) {
 
-        // 检查邮箱是否已经被注册
+        // 检查邮箱是否已被注册
         if (userService.isExistEmail(email)) {
             return ResponseEntity.status(400).body(Map.of("error", "邮箱已被注册"));
         }

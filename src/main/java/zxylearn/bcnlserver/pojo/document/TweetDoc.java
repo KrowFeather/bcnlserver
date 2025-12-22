@@ -9,6 +9,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +31,8 @@ public class TweetDoc {
     @Field(type = FieldType.Keyword)
     private Long senderId;
 
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second_millis)
+    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createTime;
 
     @Field(type = FieldType.Text, analyzer = "ik_max_word", searchAnalyzer = "ik_smart")
@@ -68,8 +71,7 @@ PUT /tweet
         "type": "keyword"
       },
       "createTime": {
-        "type": "date",
-        "format": "yyyy-MM-dd HH:mm:ss"
+        "type": "date"
       },
       "title": {
         "type": "text",

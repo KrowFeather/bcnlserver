@@ -21,6 +21,7 @@ public class TeamJoinApplyServiceImpl extends ServiceImpl<TeamJoinApplyMapper, T
         return getOne(new LambdaQueryWrapper<TeamJoinApply>()
                 .eq(TeamJoinApply::getTeamId, teamId)
                 .eq(TeamJoinApply::getApplicantId, applicantId)
+                .eq(TeamJoinApply::getStatus, 0)
         );
     }
 }

@@ -128,8 +128,12 @@ public class TeamController {
         String role = UserContext.getUserRole();
 
         Team team = teamService.getById(teamId);
-        if(team == null) {
+        if(team == null || !team.getStatus().equals(1)) {
             return ResponseEntity.status(404).body(Map.of("error", "团队不存在"));
+        }
+
+        if(team.getStatus().equals(3)) {
+            return ResponseEntity.status(400).body(Map.of("error", "团队已被删除"));
         }
 
         if(role.equals(JwtUtil.USER) && !userId.equals(team.getOwnerId())) {
@@ -157,12 +161,12 @@ public class TeamController {
         }
 
         // 已是成员检验
-        if(teamMemberService.getTeamMember(userId, team.getId()) != null) {
+        if(teamMemberService.getTeamMember(team.getId(), userId) != null) {
             return ResponseEntity.status(400).body(Map.of("error", "已是团队成员"));
         }
 
         // 是否已提交申请检验
-        TeamJoinApply teamJoinApply = teamJoinApplyService.getTeamJoinApply(userId, teamId);
+        TeamJoinApply teamJoinApply = teamJoinApplyService.getTeamJoinApply(teamId, userId);
         if(teamJoinApply != null && teamJoinApply.getStatus() == 0) {
             return ResponseEntity.status(400).body(Map.of("error", "已提交加入团队申请，正在审核中"));
         }
@@ -195,7 +199,7 @@ public class TeamController {
         }
 
         // 已是成员检验
-        if(teamMemberService.getTeamMember(teamJoinApply.getApplicantId(), teamJoinApply.getTeamId()) != null) {
+        if(teamMemberService.getTeamMember(teamJoinApply.getTeamId(), teamJoinApply.getApplicantId()) != null) {
             return ResponseEntity.status(400).body(Map.of("error", "已是团队成员"));
         }
 
@@ -274,7 +278,7 @@ public class TeamController {
             return ResponseEntity.status(404).body(Map.of("error", "团队不存在或已被删除"));
         }
 
-        TeamMember teamMember = teamMemberService.getTeamMember(memberId, teamId);
+        TeamMember teamMember = teamMemberService.getTeamMember(teamId, memberId);
         if(teamMember == null) {
             return ResponseEntity.status(404).body(Map.of("error", "团队成员不存在"));
         }
@@ -303,7 +307,7 @@ public class TeamController {
         String role = UserContext.getUserRole();
 
         Team team = teamService.getById(teamUpdateRequestDTO.getId());
-        if(team == null || team.getStatus() != 1) {
+        if(team == null || !team.getStatus().equals(1)) {
             return ResponseEntity.status(404).body(Map.of("error", "团队不存在或已被删除"));
         }
 
@@ -341,7 +345,7 @@ public class TeamController {
             return ResponseEntity.status(403).body(Map.of("error", "无权限操作"));
         }
 
-        TeamMember teamMember = teamMemberService.getTeamMember(memberId, teamId);
+        TeamMember teamMember = teamMemberService.getTeamMember(teamId, memberId);
         if(teamMember == null) {
             return ResponseEntity.status(404).body(Map.of("error", "团队成员不存在"));
         }
