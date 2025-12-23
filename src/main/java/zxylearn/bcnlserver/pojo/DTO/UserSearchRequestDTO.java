@@ -24,6 +24,7 @@ public class UserSearchRequestDTO {
     private String phone;
     private Integer gender;
     private String address;
+    private Integer admin;
 
     @NotNull
     private Boolean matchAll;

@@ -70,7 +70,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                               userSearchRequestDTO.getSuffixName() != null ||
                               userSearchRequestDTO.getPhone() != null ||
                               userSearchRequestDTO.getGender() != null ||
-                              userSearchRequestDTO.getAddress() != null;
+                              userSearchRequestDTO.getAddress() != null ||
+                              userSearchRequestDTO.getAdmin() != null;
 
         if (hasCriteria) {
             if (Boolean.TRUE.equals(userSearchRequestDTO.getMatchAll())) {
@@ -82,7 +83,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                        .likeLeft(userSearchRequestDTO.getSuffixName() != null, User::getName, userSearchRequestDTO.getSuffixName())
                        .like(userSearchRequestDTO.getPhone() != null, User::getPhone, userSearchRequestDTO.getPhone())
                        .eq(userSearchRequestDTO.getGender() != null, User::getGender, userSearchRequestDTO.getGender())
-                       .like(userSearchRequestDTO.getAddress() != null, User::getAddress, userSearchRequestDTO.getAddress());
+                       .like(userSearchRequestDTO.getAddress() != null, User::getAddress, userSearchRequestDTO.getAddress())
+                       .eq(userSearchRequestDTO.getAdmin() != null, User::getAdmin, userSearchRequestDTO.getAdmin());
             } else {
                 wrapper.and(w -> w
                        .or(userSearchRequestDTO.getId() != null, i -> i.eq(User::getId, userSearchRequestDTO.getId()))
@@ -94,6 +96,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                        .or(userSearchRequestDTO.getPhone() != null, i -> i.like(User::getPhone, userSearchRequestDTO.getPhone()))
                        .or(userSearchRequestDTO.getGender() != null, i -> i.eq(User::getGender, userSearchRequestDTO.getGender()))
                        .or(userSearchRequestDTO.getAddress() != null, i -> i.like(User::getAddress, userSearchRequestDTO.getAddress()))
+                       .or(userSearchRequestDTO.getAdmin() != null, i -> i.eq(User::getAdmin, userSearchRequestDTO.getAdmin()))
                 );
             }
         }
