@@ -224,7 +224,6 @@ public class AuthController {
 
         // 返回登陆信息
         Map<String, Object> result = new HashMap<>();
-        user.setUsername(username);
         result.put("user", user);
         result.put("token", token);
         return ResponseEntity.ok(result);
