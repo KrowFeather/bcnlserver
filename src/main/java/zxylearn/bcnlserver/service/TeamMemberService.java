@@ -11,4 +11,5 @@ import zxylearn.bcnlserver.pojo.entity.TeamMember;
 public interface TeamMemberService extends IService<TeamMember> {
     public TeamMember getTeamMember(Long teamId, Long memberId);
     public List<TeamMemberVO> getTeamMemberList(Long teamId);
+    public List<Long> getTeamIdsByMemberId(Long memberId);
 }

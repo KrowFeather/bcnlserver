@@ -111,7 +111,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
 
-        String username = registerRequestDTO.getUseranme();
+        String username = registerRequestDTO.getUsername();
         String password = registerRequestDTO.getPassword();
         String email = registerRequestDTO.getEmail();
         String code = registerRequestDTO.getCode();

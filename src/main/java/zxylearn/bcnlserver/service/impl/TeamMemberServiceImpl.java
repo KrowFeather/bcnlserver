@@ -30,4 +30,16 @@ public class TeamMemberServiceImpl extends ServiceImpl<TeamMemberMapper, TeamMem
     public List<TeamMemberVO> getTeamMemberList(Long teamId) {
         return baseMapper.selectTeamMembers(teamId);
     }
+
+    @Override
+    public List<Long> getTeamIdsByMemberId(Long memberId) {
+        if(memberId == null) {
+            return List.of();
+        }
+        return list(new LambdaQueryWrapper<TeamMember>()
+                .eq(TeamMember::getMemberId, memberId))
+                .stream()
+                .map(TeamMember::getTeamId)
+                .toList();
+    }
 }

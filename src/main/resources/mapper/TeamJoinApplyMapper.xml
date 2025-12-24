@@ -4,7 +4,9 @@
 <mapper namespace="zxylearn.bcnlserver.mapper.TeamJoinApplyMapper">
 
     <resultMap id="TeamJoinApplyVOMap" type="zxylearn.bcnlserver.pojo.DTO.TeamJoinApplyVO">
-        <result property="applyTime" column="apply_time"/>
+        <id property="id" column="tja_id"/>
+        <result property="applyTime" column="tja_apply_time"/>
+        <result property="status" column="tja_status"/>
         
         <association property="user" javaType="zxylearn.bcnlserver.pojo.entity.User">
             <id property="id" column="u_id"/>
@@ -22,7 +24,9 @@
 
     <select id="selectTeamJoinApplies" resultMap="TeamJoinApplyVOMap">
         SELECT 
-            tja.apply_time,
+            tja.id AS tja_id,
+            tja.apply_time AS tja_apply_time,
+            tja.status AS tja_status,
             u.id AS u_id,
             u.username AS u_username,
             u.email AS u_email,

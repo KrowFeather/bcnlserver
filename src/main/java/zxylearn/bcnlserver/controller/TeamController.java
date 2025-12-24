@@ -1,6 +1,7 @@
 package zxylearn.bcnlserver.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -429,5 +430,17 @@ public class TeamController {
         }
 
         return ResponseEntity.ok(Map.of("teamJoinApplyList", teamJoinApplyService.getTeamJoinApplyList(teamId)));
+    }
+
+    @Operation(summary = "获取当前用户已加入的团队列表")
+    @PostMapping("/get-my-teams")
+    public ResponseEntity<?> getMyTeams() {
+        Long userId = Long.parseLong(UserContext.getUserId());
+        List<Long> teamIds = teamMemberService.getTeamIdsByMemberId(userId);
+        List<Team> teams = teamIds.stream()
+                .map(teamId -> teamService.getById(teamId))
+                .filter(team -> team != null && team.getStatus() == 1)
+                .toList();
+        return ResponseEntity.ok(Map.of("teamList", teams));
     }
 }
