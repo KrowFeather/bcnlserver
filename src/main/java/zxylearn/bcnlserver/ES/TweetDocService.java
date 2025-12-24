@@ -23,13 +23,13 @@ public class TweetDocService {
     }
 
     // 获取指定推文
-    public TweetDoc getTweetById(Long tweetId) {
-        return esOps.get(tweetId.toString(), TweetDoc.class);
+    public TweetDoc getTweetById(String tweetId) {
+        return esOps.get(tweetId, TweetDoc.class);
     }
 
     // 删除推文
-    public boolean removeTweet(Long tweetId) {
-        return esOps.delete(tweetId.toString(), TweetDoc.class) != null;
+    public boolean removeTweet(String tweetId) {
+        return esOps.delete(tweetId, TweetDoc.class) != null;
     }
 
     // 获取所有推文
