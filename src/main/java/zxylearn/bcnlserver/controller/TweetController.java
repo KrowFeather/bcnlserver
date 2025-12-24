@@ -64,7 +64,7 @@ public class TweetController {
 
         // 创建推文
         TweetDoc tweetDoc = TweetDoc.builder()
-                .id(idGeneratorService.getId())
+                .id(idGeneratorService.getId().toString())
                 .teamId(tweetSendRequestDTO.getTeamId())
                 .senderId(userId)
                 .createTime(LocalDateTime.now())
@@ -76,12 +76,14 @@ public class TweetController {
             return ResponseEntity.status(500).body(Map.of("error", "推文发送失败"));
         }
 
+        System.out.println(tweetDoc.getId());
+
         return ResponseEntity.ok(Map.of("tweet", tweetDoc));
     }
 
     @Operation(summary = "删除推文")
     @PostMapping("/delete")
-    public ResponseEntity<?> deleteTweet(@RequestParam Long tweetId) {
+    public ResponseEntity<?> deleteTweet(@RequestParam String tweetId) {
 
         Long userId = Long.parseLong(UserContext.getUserId());
         String role = UserContext.getUserRole();

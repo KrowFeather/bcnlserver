@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Document(indexName = "tweet")
 public class TweetDoc {
     @Id
-    private Long id;
+    private String id;
 
     @Field(type = FieldType.Keyword)
     private Long teamId;
@@ -62,7 +62,7 @@ PUT /tweet
   "mappings": {
     "properties": {
       "id": {
-        "type": "long"
+        "type": "keyword"
       },
       "teamId": {
         "type": "keyword"
