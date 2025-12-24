@@ -20,6 +20,7 @@ import cn.hutool.core.util.IdUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import zxylearn.bcnlserver.OAuth2.OAuth2Service;
+import zxylearn.bcnlserver.pojo.DTO.ChangePasswordRequestDTO;
 import zxylearn.bcnlserver.pojo.DTO.LoginRequestDTO;
 import zxylearn.bcnlserver.pojo.DTO.LoginYNURequestDTO;
 import zxylearn.bcnlserver.pojo.DTO.RegisterRequestDTO;
@@ -227,6 +228,35 @@ public class AuthController {
         result.put("user", user);
         result.put("token", token);
         return ResponseEntity.ok(result);
+    }
+
+    @Operation(summary = "修改密码")
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
+
+        String username = changePasswordRequestDTO.getUsername();
+        String oldPassword = changePasswordRequestDTO.getOldPassword();
+        String newPassword = changePasswordRequestDTO.getNewPassword();
+
+        // 获取当前用户
+        User user = userService.getUserByUsernameOrEmail(username);
+        if(user == null) {
+            return ResponseEntity.status(404).body(Map.of("error", "用户不存在"));
+        }
+
+        // 验证旧密码
+        if(!passwordEncoder.matches(oldPassword, user.getPasswordHash())) {
+            return ResponseEntity.status(403).body(Map.of("error", "旧密码错误"));
+        }
+
+        // 更新密码
+        user.setPasswordHash(passwordEncoder.encode(newPassword));
+        if(!userService.updateById(user)) {
+            return ResponseEntity.status(500).body(Map.of("error", "密码修改失败"));
+        }
+
+        user.setPasswordHash("---");
+        return ResponseEntity.ok(Map.of("user", user));
     }
 
     @Operation(summary = "登出")
